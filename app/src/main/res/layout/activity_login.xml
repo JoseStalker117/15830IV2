@@ -1,43 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="32dp"
-    >
+    android:background="@color/background">
 
-    <EditText
-        android:id="@+id/etUsuario"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Iniciar Sesión"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="32dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Usuario"
-        android:inputType="text"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/input_stroke"
+        app:hintTextColor="@color/input_hint"
+        app:boxBackgroundColor="@color/input_background">
 
-    <EditText
-        android:id="@+id/etContrasena"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Usuario"
+            android:inputType="text"
+            android:textColor="@color/input_text"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/input_stroke"
+        app:hintTextColor="@color/input_hint"
+        app:boxBackgroundColor="@color/input_background"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/input_hint">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etContrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:textColor="@color/input_text"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Iniciar sesión"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        app:backgroundTint="@color/primary"/>
 
     <TextView
         android:id="@+id/tvRecuperarContrasena"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¿Olvidaste tu contraseña?"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@color/secondary"
         android:textStyle="bold"
         android:gravity="center"
-        />
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvRegistrarse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿No tienes cuenta? Regístrate"
+        android:textColor="@color/secondary"
+        android:textStyle="bold"
+        android:gravity="center"/>
 
 </LinearLayout>

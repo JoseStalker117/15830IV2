@@ -9,9 +9,12 @@ import android.database.Cursor;
 public class SQLite extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "usuarios.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Incrementado para forzar actualización
     private static final String TABLE_USERS = "users";
     private static final String COLUMN_ID = "id";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_PHONE = "phone";
     private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_PASSWORD = "password";
 
@@ -23,6 +26,9 @@ public class SQLite extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_NAME + " TEXT,"
+                + COLUMN_EMAIL + " TEXT UNIQUE,"
+                + COLUMN_PHONE + " TEXT,"
                 + COLUMN_USERNAME + " TEXT UNIQUE,"
                 + COLUMN_PASSWORD + " TEXT"
                 + ")";
@@ -36,9 +42,12 @@ public class SQLite extends SQLiteOpenHelper {
     }
 
     // Método para registrar usuario
-    public boolean registrarUsuario(String username, String password) {
+    public boolean registrarUsuario(String name, String email, String phone, String username, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_PHONE, phone);
         values.put(COLUMN_USERNAME, username);
         values.put(COLUMN_PASSWORD, password);
 
@@ -68,5 +77,54 @@ public class SQLite extends SQLiteOpenHelper {
         int rows = db.update(TABLE_USERS, values, COLUMN_USERNAME + "=?", new String[]{username});
         db.close();
         return rows > 0;
+    }
+
+    // Método para obtener información del usuario
+    public UserInfo obtenerInfoUsuario(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        UserInfo userInfo = null;
+
+        String query = "SELECT " + COLUMN_NAME + ", " + COLUMN_EMAIL + ", " + COLUMN_PHONE + 
+                      " FROM " + TABLE_USERS + 
+                      " WHERE " + COLUMN_USERNAME + "=?";
+        
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+        
+        if (cursor.moveToFirst()) {
+            userInfo = new UserInfo(
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE))
+            );
+        }
+        
+        cursor.close();
+        db.close();
+        return userInfo;
+    }
+
+    // Clase para almacenar la información del usuario
+    public static class UserInfo {
+        private String name;
+        private String email;
+        private String phone;
+
+        public UserInfo(String name, String email, String phone) {
+            this.name = name;
+            this.email = email;
+            this.phone = phone;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
     }
 }
